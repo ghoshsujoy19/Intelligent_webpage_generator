@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Login/Registration Form Transition</title>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+  <link rel="stylesheet" href="{% static 'login/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'login/css/bootstrap-grid.css' %}">
+  <link rel="stylesheet" href="{% static 'login/css/bootstrap-grid.min.css' %}">
+  <link rel="stylesheet" href="{% static 'login/css/bootstrap-reboot.css' %}">
+  <link rel="stylesheet" href="{% static 'login/css/bootstrap-reboot.min.css' %}">
+  <link rel="stylesheet" href="{% static 'login/css/bootstrap.css' %}">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+    <link rel="stylesheet" href="{% static 'login/css/style.css' %}">
+  <script type="text/javascript">
+    var CaptchaCallback = function() {
+        grecaptcha.render('RecaptchaField1', {'sitekey' : '6Le_gjgUAAAAAGZFt6xv2v1hcXfqFq4uOSnkKY7F'});
+        grecaptcha.render('RecaptchaField2', {'sitekey' : '6Le_gjgUAAAAAGZFt6xv2v1hcXfqFq4uOSnkKY7F'});
+    };
+</script>
+<script src="https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit" async defer></script>
+
+</head>
+
+<body style="background-repeat: no-repeat; background-size: cover">
+<header class="header">
+        <div style="width: 100%" class="container">
+            <div class="col-sm-2">
+                <img class="profile-image img-responsive pull-left" src="{% static 'login/img/iitg.png' %}" alt="James Lee" style="height:120px"/>
+            </div>
+            <div class="col-sm-10">
+                <h1 class="name">Indian Institute of Technology Guwahati</h1></br>
+                <h2 class="desc">Faculty Webpage Management System</h2>
+            </div><!--//profile-->
+       </div><!--//container-->
+</header><!--//header-->
+<div class="cont">
+  <div class="form sign-in">
+    <h2>Welcome back,</h2>
+      <form action="/ssl_main/signin/" method="post" id="form1">{% csrf_token %}
+         <label>
+          <span>Webmail</span>
+          <input type="text" name="webmail" required/>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" required/>
+        </label>
+        <div style="margin-left: 110px">
+          <div style="position: inherit" class="form" id="RecaptchaField1"></div>
+        </div>
+
+      </form>
+    <p class="forgot-pass">Forgot password?</p>
+    <button type="submit" form="form1" class="submit">Sign In</button>
+  </div>
+  <div class="sub-cont">
+    <div class="img" style="background-image: {% static 'login/img/iitg.png' %}">
+      <div class="img__text m--up">
+        <h2>New here?</h2>
+        <p>Sign up and manage your webpage!</p>
+      </div>
+      <div class="img__text m--in">
+        <h2>Have an account?</h2>
+        <p>If you already have an account, just sign in.</p>
+      </div>
+      <div class="img__btn">
+        <span class="m--up">Sign Up</span>
+        <span class="m--in">Sign In</span>
+      </div>
+    </div>
+    <div>
+    <div class="form sign-up">
+      <h2>Enter Your Details</h2>
+
+      <form action="/ssl_main/signup/" id="form2" method="post">{% csrf_token %}
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" required />
+        </label>
+        <label>
+          <span>Webmail (without @iitg.ernet.in)</span>
+          <input type="text" name="webmail" required />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="pass" id="passwd"  required />
+        </label>
+        <label>
+          <span>Confirm Password</span>
+          <input type="password" name="cpasswd" data-match="#passwd" required />
+        </label>
+        <div style="margin-left: 110px">
+           <div class="form sign-up" id="RecaptchaField2"></div>
+        </div>
+
+      </form>
+      <button type="submit" form="form2" class="submit">Sign Up</button>
+
+    </div>
+    </div>
+  </div>
+</div>
+  
+    <script  src="{% static 'login/js/index.js' %}"></script>
+
+</body>
+</html>

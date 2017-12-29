@@ -1,0 +1,277 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free Bootstrap Admin Template : Binary Admin</title>
+	<!-- BOOTSTRAP STYLES-->
+    <link href="{% static '/portal/assets/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FONTAWESOME STYLES-->
+    <link href="{% static '/portal/assets/css/font-awesome.css' %}" rel="stylesheet" />
+     <!-- MORRIS CHART STYLES-->
+    <link href="{% static '/portal/assets/js/morris/morris-0.4.3.min.css' %}" rel="stylesheet" />
+        <!-- CUSTOM STYLES-->
+    <link href="{% static '/portal/assets/css/custom.css' %}" rel="stylesheet" />
+     <!-- GOOGLE FONTS-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+<link href="{% static '/css/my.css' %}" rel="stylesheet" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+<script>
+    $(window).load(function() {
+	$(".se-pre-con").fadeOut(1000);;
+    });
+</script>
+</head>
+
+<body>
+<!-- header -->
+<div class="se-pre-con"></div>
+
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url "portal" %}">My Portal</a>
+            </div>
+  <div style="color: white;
+padding: 15px 50px 5px 50px;
+float: right;
+font-size: 16px;"> &nbsp; <a href="{% url "logout" %}" class="btn btn-danger square-btn-adjust">Logout</a> </div>
+        </nav>   
+           <!-- /. NAV TOP  -->
+                <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+				<li class="text-center">
+                    <img src="/{{ user.img.url }}" class="user-image img-responsive"/>
+					</li>
+				
+					
+                    <li>
+                        <a class="active-menu"  href="{% url "portal" %}"><i class="fa fa-dashboard fa-3x"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url "uploadphoto" %}"><i class="fa fa-upload fa-3x"></i> Upload Photo </a>
+                    </li>
+                    <li>
+                        <a href="{% url "eduandwork" %}"><i class="fa fa-briefcase fa-3x"></i> Education And Work </a>
+                    </li>
+                    <li  >
+                        <a  href="{% url "teaching" %}"><span><i class="fa fa-edit fa-3x"></i></span> <span> Teaching</span> </a>
+                    </li>
+                     <li>
+                         <a  href="{% url "students" %}"><i class="fa fa-users fa-3x"></i> Students </a>
+                    </li>
+                    <li>
+                        <a  href="{% url "projects" %}"><i class="fa fa-tasks fa-3x"></i> Projects</a>
+                    </li>
+						   <li  >
+                        <a   href="{% url "publications" %}"><i class="fa fa-book fa-3x"></i> Publications</a>
+                    </li>
+                    <li  >
+                        <a  href="{% url "researchinterests" %}"><i class="fa fa-sitemap fa-3x"></i> Research Interests</a>
+                    </li>
+                      <li  >
+                        <a  href="{% url "recognitions" %}"><i class="fa fa-trophy fa-3x"></i> Recognitions</a>
+                    </li>
+                    <li  >
+                        <a  href="{% url "portal" %}"><i class="fa fa-question fa-3x"></i> Others </a>
+                    </li>				
+                </ul>
+               
+            </div>
+            
+        </nav>  
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" >
+            <div id="page-inner">
+                <div class="row">
+                    <div class="col-md-12">
+                     <h2> {{ user.name }}'s Dashboard</h2>
+                        <h5>Welcome {{ user.name }}, Love to see you back. </h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                Notifications
+                            </div>
+                            <div class="panel-body">
+                                {% for i in notif %}
+                                {% if i.seen %}
+                                <div class="alert alert-info alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                
+                                    {{ i.description }}
+                            </div>
+                            {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Dashboard
+                        </div>
+                        <div class="col-md-12">
+                            <h3>Personal Information</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <form action="/ssl_main/updateinfo/" method="post" name="updateinfo" id="updateinfo">{% csrf_token %}
+                                <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Name</label>
+                                            <input class="form-control" name="name" value="{{ user.name }}" autofocus required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Residence</label>
+                                            <textarea class="form-control" name="resadd" rows="3" required>{{ user.residence }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Residence Phone</label>
+                                            {% if user.residence_phone_ext == 0 %}
+                                            <input class="form-control" name="resnum" placeholder="Phone number with extension" required />
+                                            {% else %}
+                                            <input class="form-control" name="resnum" value={{ user.residence_phone_num }} required />
+                                            {% endif %}
+                                        </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Department</label>
+                                            <select class="form-control" name="dept" required>
+                                                {% if user.department == "" %}
+                                                <option disabled selected>Select Department...</option>
+                                                {% else %}
+                                                <option selected>{{ user.department }}</option>
+                                                {% endif %}
+                                                <option>Computer Science and Engineering</option>
+                                                <option>Mathematics</option>
+                                                <option>Electronics and Electrical Engineering</option>
+                                                <option>Mechanical Engineering</option>
+                                                <option>Civil Engineering</option>
+                                                <option>Bio-Tech</option>
+                                                <option>Chemical Engineering</option>
+                                                <option>Chemistry</option>
+                                                <option>Design</option>
+                                                <option>Humanities and Social Sciences</option>
+                                                <option>Physics</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Designation</label>
+                                            <select class="form-control" name="desg" required>
+                                                {% if user.designation == "" %}
+                                                <option disabled selected>Select Designation...</option>
+                                                {% else %}
+                                                <option selected>{{ user.designation }}</option>
+                                                {% endif %}
+                                                <option>Professor</option>
+                                                <option>Associate Professor</option>
+                                                <option>Assistant Professor</option>
+                                                <option>Head of Department</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Office Room Number</label>
+                                            {% if user.office_room_num == "" %}
+                                            <input class="form-control" name="offadd" placeholder="Office Room number..." required />
+                                            {% else %}
+                                            <input class="form-control" name="offadd" value={{ user.office_room_num }} required />
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Office Phone</label>
+                                            {% if user.office_phone_ext == 0 %}
+                                            <input class="form-control" name="offnum" placeholder="Phone number with extension" />
+                                            {% else %}
+                                            <input class="form-control" name="offnum" value={{ user.office_phone_ext }} required />
+                                            {% endif %}
+                                        </div>
+                                </div>
+
+                                </form>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="submit" form="updateinfo" class="btn btn-primary">Update Info</button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <h3>Account Settings</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <form action="/ssl_main/changepass/" id="changepass" method="post" >{% csrf_token %}
+                                        <div class="form-group">
+                                            <label>Old Password</label>
+                                            <input name="opass" type="password" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>New Password</label>
+                                            <input name="npass" type="password" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirm New Password</label>
+                                            <input name="cnpass" type="password" class="form-control" />
+                                        </div>
+                                        <button type="submit" form="changepass" class="btn btn-primary v">Change Password</button>
+                                    </form>
+                                </div>
+                                <div class="col-md-6">
+                                    <form action="/ssl_main/change_mail/" id="changemail" method="post">{% csrf_token %}
+                                        <label>Webmail</label>
+                                        <div class="form-group input-group">
+
+                                                <input type="text" name="webmail" class="form-control" value={{ user.webmail }} disabled required>
+                                                <span class="input-group-addon">@iitg.ernet.in</span>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+    </div>
+
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
+     <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="{% static '/portal/assets/js/jquery-1.10.2.js' %}"></script>
+      <!-- BOOTSTRAP SCRIPTS -->
+    <script src="{% static '/portal/assets/js/bootstrap.min.js' %}"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="{% static '/portal/assets/js/jquery.metisMenu.js' %}"></script>
+     <!-- MORRIS CHART SCRIPTS -->
+     <script src="{% static '/portal/assets/js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static '/portal/assets/js/morris/morris.js' %}"></script>
+      <!-- CUSTOM SCRIPTS -->
+    <script src="{% static '/portal/assets/js/custom.js' %}"></script>
+    
+   
+</body>
+</html>

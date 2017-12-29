@@ -1,0 +1,221 @@
+{% load static %}
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Resume a Personal Category Flat Bootstrap Responsive Website Template | Home :: w3layouts</title>
+<!--mobile apps-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="My Resume Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+	SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!--mobile apps-->
+<!--Custom Theme files-->
+<link href="{% static '/facultypage/css/bootstrap.css' %}" type="text/css" rel="stylesheet" media="all">
+<link href="{% static '/facultypage/css/style.css' %}" type="text/css" rel="stylesheet" media="all">
+<link rel="stylesheet" href="{% static '/facultypage/css/swipebox.css' %}">
+<!--//Custom Theme files-->
+<!--js-->
+<script src="{% static '/facultypage/js/jquery-1.11.1.min.js' %}"></script>
+<!-- //js -->
+<!--web-fonts-->
+<link href='//fonts.googleapis.com/css?family=Overlock:400,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<!--//web-fonts-->
+<!--start-smooth-scrolling-->
+<script type="text/javascript" src="{% static '/facultypage/js/move-top.js' %}"></script>
+<script type="text/javascript" src="{% static '/facultypage/js/easing.js' %}"></script>
+<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$(".scroll").click(function(event){		
+				event.preventDefault();
+				$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+			});
+		});
+</script>
+<!--//end-smooth-scrolling-->
+</head>
+<body>
+	<!--top-nav-->
+	<div class="top-nav wow">
+		<div class="container">
+			<div class="navbar-header logo">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					Menu
+				</button>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<div class="menu">
+					<ul class="nav navbar">
+						<li><a href="{% url "home" faculty.webmail  %}" class="active">About</a></li>
+						<li><a href="{% url "facteaching" faculty.webmail  %}">Teaching</a></li>
+						<li><a href="{% url "facprojects" faculty.webmail  %}">Projects</a></li>
+						<li><a href="{% url "facstudents" faculty.webmail  %}">Students</a></li>
+						<li><a href="{% url "facpublications" faculty.webmail  %}">Publications</a></li>
+						<li><a href="{% url "facrecognitions" faculty.webmail  %}">Recognitions</a></li>
+					</ul>
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+		</div>
+	</div>	
+	<!--//top-nav-->
+	<!--banner-->
+	<div id="home" class="banner">
+		<div class="banner-info">
+			<div class="container">
+				<div class="col-md-4 header-left">
+					<img src="/{{ faculty.img.url }}" alt=""/>
+				</div>
+				<div class="col-md-8 header-right">
+					<h2>Hello</h2>
+					<h1>{{ faculty.name }}</h1>
+					<h6>{{ faculty.designation }}, {{ faculty.department }}</h6>
+                    <h6>IIT Guwahati, Guwahati - 781039, Assam, India</h6>
+					<ul class="address">
+						<li>
+							<ul class="address-text">
+								<li><b>OFFICE ROOM NO.</b></li>
+								<li>{{ faculty.office_room_num }}</li>
+							</ul>
+						</li>
+						<li>
+							<ul class="address-text">
+								<li><b>OFFICE PHONE </b></li>
+								<li>+91 361 258{{ faculty.office_phone_ext }}</li>
+							</ul>
+						</li>
+						<li>
+							<ul class="address-text">
+								<li><b>RESIDENCE ADDRESS </b></li>
+								<li>{{ faculty.residence }}</li>
+							</ul>
+						</li>
+                        <li>
+							<ul class="address-text">
+								<li><b>RESIDENCE PHONE </b></li>
+								<li>+91 361 258{{ faculty.residence_phone_num }}</li>
+							</ul>
+						</li>
+						<li>
+							<ul class="address-text">
+								<li><b>WEBMAIL </b></li>
+								<li>{{ faculty.webmail }}@iitg.ernet.in</a></li>
+							</ul>
+						</li>
+						<li>
+							<ul class="address-text">
+								<li><b>RESEARCH INT. </b></li>
+								{% for i in faculty.researchinterests_set.all %}
+								<li>{{ i.research_interests }}</li>
+								{% endfor %}
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!--//banner-->
+	<!--education-->
+	<div id="education" class="education">
+		<div class="container">
+
+			<h3 class="title">Education</h3>
+            {% for i in faculty.education_set.all|dictsort:"start_year" %}
+            {% if forloop.counter|divisibleby:2 %}
+			<div class="work-info"> 
+				<div class="col-md-6 work-left"> 
+					<h4>{{ i.start_year }} - {{ i.end_year }}</h4>
+				</div>
+				<div class="col-md-6 work-right"> 
+					<h5><span class="glyphicon glyphicon-education"></span>{{ i.institution }}</h5>
+					<p> {{ i.course }} in {{ i.field }} </p>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+            {% else %}
+			<div class="work-info"> 
+				<div class="col-md-6 work-right work-right2"> 
+					<h4>{{ i.start_year }} - {{ i.end_year }}</h4>
+				</div>
+				<div class="col-md-6 work-left work-left2"> 
+					<h5>{{ i.institution }}<span class="glyphicon glyphicon-education"></span></h5>
+					<p>{{ i.course }} in {{ i.field }} </p>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+            {% endif %}
+            {% endfor %}
+		</div>
+	</div>
+	<!--//education-->
+	<!--work-experience-->
+	<div id="work" class="work">
+		<div class="container">
+			<h3 class="title">Work Experience</h3>
+            {% for i in faculty.workexperience_set.all|dictsort:"start_year" %}
+            {% if forloop.counter|divisibleby:2 %}
+			<div class="work-info"> 
+				<div class="col-md-6 work-left"> 
+					<h4>{{ i.start_year }}-{{ i.end_year }}</h4>
+				</div>
+				<div class="col-md-6 work-right"> 
+					<h5><span class="glyphicon glyphicon-briefcase"> </span>{{ i.organisation }}</h5>
+					<p>{{i.designation}}</p>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+            {% else %}
+			<div class="work-info"> 
+				<div class="col-md-6 work-right work-right2"> 
+					<h4>{{ i.start_year }}-{{ i.end_year }}</h4>
+				</div>
+				<div class="col-md-6 work-left work-left2"> 
+					<h5>{{ i.organisation }}<span class="glyphicon glyphicon-briefcase"> </span></h5>
+					<p>{{i.designation}}</p>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+			{% endif %}
+            {% endfor %}
+		</div>
+	</div>
+	<!--//work-experience-->
+	
+	<div class="footer">
+		<div class="container">
+			<p>© 2017, All rights reserved <a href="{% url "home" faculty.webmail  %}">About</a> <a href="{% url "facteaching" faculty.webmail  %}">Teaching</a> <a href="{% url "facstudents" faculty.webmail  %}">Students</a> <a href="{% url "facprojects" faculty.webmail  %}">Projects</a> <a href="{% url "facpublications" faculty.webmail  %}">Publications</a> <a href="{% url "facrecognitions" faculty.webmail  %}">Recognitions</a> Developed By: Mitansh Jain, Sujoy Ghosh, Shubhendu Patidar </p>
+		</div>
+	</div>
+	<!--//footer-->
+	<!--smooth-scrolling-of-move-up-->
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+			};
+			
+			$().UItoTop({ easingType: 'easeOutQuart' });
+			
+		});
+	</script>
+	<!--//smooth-scrolling-of-move-up-->
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static '/facultypage/js/bootstrap.js' %}"></script>
+</body>
+</html>
