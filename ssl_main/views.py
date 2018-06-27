@@ -20,7 +20,7 @@ from bs4 import BeautifulSoup
 
 def send_verification_mail(request, webmail, randstr):
     faculty = get_object_or_404(User, webmail=webmail)
-    apikey = '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'
+    apikey = ''
     sg = sendgrid.SendGridAPIClient(apikey=apikey)
     from_email = Email("noreply@iitg.com")
     email = faculty.webmail
@@ -42,7 +42,7 @@ def send_verification_mail(request, webmail, randstr):
 
 def send_pass(webmail):
     faculty = get_object_or_404(User, webmail=webmail)
-    apikey = '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'
+    apikey = ''
     sg = sendgrid.SendGridAPIClient(apikey=apikey)
     email = faculty.webmail
     email = email + '@iitg.ac.in'
@@ -63,7 +63,7 @@ def send_pass(webmail):
 
 def verification_mail(webmail, randstr):
     faculty = get_object_or_404(User, webmail=webmail)
-    apikey = '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'
+    apikey = ''
     sg = sendgrid.SendGridAPIClient(apikey=apikey)
     email = faculty.webmail
     email = email + '@iitg.ac.in'
