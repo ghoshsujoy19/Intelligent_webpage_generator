@@ -1,4 +1,4 @@
-﻿{% load static %}
+﻿
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Free Bootstrap Admin Template : Binary Admin</title>
 	<!-- BOOTSTRAP STYLES-->
+    {% load static %}
     <link href="{% static '/portal/assets/css/bootstrap.css' %}" rel="stylesheet" />
      <!-- FONTAWESOME STYLES-->
     <link href="{% static '/portal/assets/css/font-awesome.css' %}" rel="stylesheet" />
@@ -129,7 +130,7 @@ font-size: 16px;"> &nbsp; <a href="{% url "logout" %}" class="btn btn-danger squ
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <form action="/ssl_main/updateinfo/" method="post" name="updateinfo" id="updateinfo">{% csrf_token %}
+                                <form action="/ssl_main/updateinfo/" method="post" name="updateinfo" id="updateinfo" enctype="multipart/form-data">{% csrf_token %}
                                 <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Name</label>
@@ -196,7 +197,7 @@ font-size: 16px;"> &nbsp; <a href="{% url "logout" %}" class="btn btn-danger squ
                                         <div class="form-group">
                                             <label>Office Phone</label>
                                             {% if user.office_phone_ext == 0 %}
-                                            <input class="form-control" name="offnum" placeholder="Phone number with extension" />
+                                            <input class="form-control" name="offnum" placeholder="Phone number with extension" required/>
                                             {% else %}
                                             <input class="form-control" name="offnum" value={{ user.office_phone_ext }} required />
                                             {% endif %}
@@ -218,18 +219,18 @@ font-size: 16px;"> &nbsp; <a href="{% url "logout" %}" class="btn btn-danger squ
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <form action="/ssl_main/changepass/" id="changepass" method="post" >{% csrf_token %}
+                                    <form action="/ssl_main/changepass/" id="changepass" method="post" enctype="multipart/form-data">{% csrf_token %}
                                         <div class="form-group">
                                             <label>Old Password</label>
-                                            <input name="opass" type="password" class="form-control" />
+                                            <input name="opass" type="password" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
                                             <label>New Password</label>
-                                            <input name="npass" type="password" class="form-control" />
+                                            <input name="npass" type="password" class="form-control" required/>
                                         </div>
                                         <div class="form-group">
                                             <label>Confirm New Password</label>
-                                            <input name="cnpass" type="password" class="form-control" />
+                                            <input name="cnpass" type="password" class="form-control" required/>
                                         </div>
                                         <button type="submit" form="changepass" class="btn btn-primary v">Change Password</button>
                                     </form>
@@ -240,7 +241,7 @@ font-size: 16px;"> &nbsp; <a href="{% url "logout" %}" class="btn btn-danger squ
                                         <div class="form-group input-group">
 
                                                 <input type="text" name="webmail" class="form-control" value={{ user.webmail }} disabled required>
-                                                <span class="input-group-addon">@iitg.ernet.in</span>
+                                                <span class="input-group-addon">@iitg.ac.in</span>
                                         </div>
 
                                     </form>

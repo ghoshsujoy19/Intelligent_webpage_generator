@@ -2,22 +2,16 @@ from django.shortcuts import render, get_object_or_404
 from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
-from django.contrib import messages
-from.forms import ImageUploadForm
-from django.core.mail import send_mail
-from django.template import Context
-from . import models
 from .models import User, Education, WorkExperience, ResearchInterests, Teaching, Students, Publication, Projects, Recognitions, Department, Notifications
-from django.db import models
 import urllib
 import json
 import string
 import random
-import os
+import os, sendgrid
+from sendgrid.helpers.mail import *
 # for crawling
 import requests
 # from bs4 import BeautifulSoup
-import html
 import re
 from bs4 import BeautifulSoup
 
@@ -26,20 +20,34 @@ from bs4 import BeautifulSoup
 
 def send_verification_mail(request, webmail, randstr):
     faculty = get_object_or_404(User, webmail=webmail)
+    apikey = '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'
+    sg = sendgrid.SendGridAPIClient(apikey=apikey)
+    from_email = Email("noreply@iitg.com")
+    email = faculty.webmail
+    email = email + '@iitg.ac.in'
+    to_email = Email(email)
     subject = "Faculty Webpage management system mail verification"
     msg = "".join(["Dear ",
                    faculty.name,
                    "\nClick on following link or copy paste in browser to verify webmail and activate your portal",
-                   "\nlocalhost:8000/ssl_main/activate_account/",
+                   "\nhttp://localhost:8000/ssl_main/activate_account/",
                    faculty.webmail,
                    "/",
                    randstr])
-    send_mail(subject, msg, 'noreply@ssl_main.co', ['mitansh1398@iitg.ernet.in'], fail_silently=False)
+    content = Content("text/plain",msg)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
     return HttpResponse('Mail Sent')
 
 
 def send_pass(webmail):
     faculty = get_object_or_404(User, webmail=webmail)
+    apikey = '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'
+    sg = sendgrid.SendGridAPIClient(apikey=apikey)
+    email = faculty.webmail
+    email = email + '@iitg.ac.in'
+    from_email = Email("noreply@iitg.com")
+    to_email = Email(email)
     subject = "Faculty Webpage Management system Forgot Password"
     passwd = faculty.password
     msg = "".join(["Dear ",
@@ -47,12 +55,20 @@ def send_pass(webmail):
                    "\nYour Current password is ",
                    passwd]
                   )
-    rec_mail = "".join([webmail, '@iitg.ernet.in'])
-    send_mail(subject, msg, 'noreply@ssl_main.co', [rec_mail], fail_silently=False)
+    content = Content("text/plain", msg)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    return HttpResponse('Mail Sent')
 
 
 def verification_mail(webmail, randstr):
     faculty = get_object_or_404(User, webmail=webmail)
+    apikey = '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'
+    sg = sendgrid.SendGridAPIClient(apikey=apikey)
+    email = faculty.webmail
+    email = email + '@iitg.ac.in'
+    from_email = Email("noreply@iitg.com")
+    to_email = Email(email)
     subject = "Faculty Webpage management system mail verification"
     msg = "".join(["Dear ",
                    faculty.name,
@@ -62,8 +78,12 @@ def verification_mail(webmail, randstr):
                    "/",
                    randstr]
                   )
-    rec_mail = "".join([webmail, '@iitg.ernet.in'])
-    send_mail(subject, msg, 'noreply@ssl_main.co', [rec_mail], fail_silently=False)
+    # rec_mail = "".join([webmail, '@iitg.ac.in'])
+    # send_mail(subject, msg, 'noreply@ssl_main.co', [rec_mail], fail_silently=False)
+    content = Content("text/plain", msg)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    return HttpResponse('Mail Sent')
 
 
 def activate_account(request, webmail, randstr):
@@ -211,16 +231,19 @@ def updateinfo(request):
     resnum = request.POST['resnum']
     offadd = request.POST['offadd']
     offnum = request.POST['offnum']
-    faculty = User.objects.filter(webmail=request.session['faculty_mail'])
-    faculty.update(
-        name=name,
-        department=dept,
-        designation=desg,
-        residence=resadd,
-        residence_phone_num=resnum,
-        office_room_num=offadd,
-        office_phone_ext=offnum,
-    )
+    print(desg)
+    faculty = User.objects.get(webmail=request.session['faculty_mail'])
+
+    faculty.name=name
+    faculty.department=dept
+    faculty.residence=resadd
+    faculty.residence_phone_num=resnum
+    faculty.office_room_num=offadd
+    faculty.office_phone_ext=offnum
+    faculty.designation=desg
+    faculty.save()
+
+    # faculty.save()
     return HttpResponseRedirect('/ssl_main/portal/')
 
 
@@ -273,7 +296,7 @@ def mailcrawler(webmail):
         user = get_object_or_404(User, webmail=webmail)
         Pos = user.designation
         u = User.objects.filter(webmail=webmail)
-        u.update(designation="Associate Professor")
+        # u.update(designation="Associate Professor")
         if "promotion" in text or "promoted" in text:
             # print("New promotion")
             if "Professor" in text:
